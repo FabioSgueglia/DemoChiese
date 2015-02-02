@@ -2,6 +2,7 @@ package demochiese.app.lapsy.com.demochiese;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.RemoteException;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,7 +19,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.altbeacon.beacon.Beacon;
+import org.altbeacon.beacon.BeaconConsumer;
+import org.altbeacon.beacon.BeaconManager;
+import org.altbeacon.beacon.Identifier;
+import org.altbeacon.beacon.MonitorNotifier;
+import org.altbeacon.beacon.RangeNotifier;
+import org.altbeacon.beacon.Region;
+
+import java.util.Collection;
 
 /*
 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -27,7 +42,7 @@ mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
 
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, BeaconConsumer {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -38,6 +53,15 @@ public class MainActivity extends ActionBarActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
+
+    Context context = this.getApplicationContext();
+    Toast toast = new Toast(context);
+    CharSequence message = "";
+    int duration = Toast.LENGTH_SHORT;
+
+    protected static final String TAG = "MainActivity";
+    private BeaconManager beaconManager;
+    private String myUUID = "01122334-4556-6778-899A-ABBCCDDEEFF0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +76,16 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
+
+        beaconManager = BeaconManager.getInstanceForApplication(this);
+        if(!beaconManager.checkAvailability()) {
+            beaconManager.bind(this);
+        }
+        else {
+            //
+        }
     }
 
     @Override
@@ -63,6 +97,7 @@ public class MainActivity extends ActionBarActivity
                 .commit();
     }
 
+    // Menu del NavigationDrawer
     public void onSectionAttached(int number) {
         switch (number) {
             case 1:
@@ -120,6 +155,62 @@ public class MainActivity extends ActionBarActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    // Metodi della librearia per beacons
+    @Override
+    public void onBeaconServiceConnect() {
+
+        //Monitoring
+        beaconManager.setMonitorNotifier(new MonitorNotifier() {
+            @Override
+            public void didEnterRegion(Region region) {
+                message = "Entered in a region.";
+                Log.i(TAG, message.toString());
+                toast.makeText(context, message, duration).show();
+            }
+
+            @Override
+            public void didExitRegion(Region region) {
+                message = "Exit from region.";
+                Log.i(TAG, message.toString());
+                toast.makeText(context, message, duration).show();
+            }
+
+            @Override
+            public void didDetermineStateForRegion(int state, Region region) {
+                message = "State: " + state + ", region: " + region.describeContents();
+                Log.i(TAG, message.toString());
+                toast.makeText(context, message, duration).show();
+
+            }
+        });
+
+        // Ranging
+        /*beaconManager.setRangeNotifier(new RangeNotifier() {
+            @Override
+            public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
+                if (beacons.size() > 0) {
+                    Log.i(TAG, "The first beacon I see is about "+beacons.iterator().next().getDistance()+" meters away.");
+                }
+            }
+        });*/
+
+        try {
+            beaconManager.startMonitoringBeaconsInRegion(new Region("myMonitoringUniqueId",
+                                                                    Identifier.parse(this.myUUID),
+                                                                    null,
+                                                                    null));
+        } catch (RemoteException e) {   }
+    }
+
+    public void debugLogOnScreen(String message) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ;
+            }
+        });
     }
 
     /**
