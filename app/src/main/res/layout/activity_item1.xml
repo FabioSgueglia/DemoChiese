@@ -1,0 +1,85 @@
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context="demochiese.app.lapsy.com.demochiese.Item1Activity"
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/porta_magna">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:visibility="invisible"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2.1"
+                android:background="#CCf24646"
+                android:text="Porta Magna"
+                android:gravity="center"
+                android:textSize="18dp"
+                android:textColor="#000000"
+                />
+
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.8"
+                android:background="#BB333333"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:text="La Porta Magna è il portale centrale della basilica di San Petronio a Bologna. Realizzata a partire dal 1425, è decorate da statue e rilievi che sono considerati il capolavoro dello scultore senese Jacopo della Quercia. Su questi lavori formò il proprio stile magniloquente Michelangelo Buonarroti, che ebbe modo di studiarli e ammirarli."
+                    android:textSize="14dp"
+                    android:gravity="center"
+                    android:textColor="#D2D2D2"/>
+            </ScrollView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:orientation="horizontal"
+                android:background="#BB333333">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="15dp"
+                    android:clickable="true"
+                    android:onClick="goToAudioGallery"
+                    android:src="@drawable/audio_icon"/>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="15dp"
+                    android:clickable="true"
+                    android:onClick="goToVideoGallery"
+                    android:src="@drawable/video_icon"/>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="15dp"
+                    android:clickable="true"
+                    android:onClick="goToPhotoGallery"
+                    android:src="@drawable/photo_gallery_icon"/>
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>

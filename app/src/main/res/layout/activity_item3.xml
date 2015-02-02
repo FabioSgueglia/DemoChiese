@@ -1,0 +1,85 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="demochiese.app.lapsy.com.demochiese.Item1Activity"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/altare_madonna_in_trono">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:visibility="invisible"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2.1"
+            android:background="#CCf24646"
+            android:text="Altare Madonna in Trono"
+            android:gravity="center"
+            android:textSize="18dp"
+            android:textColor="#000000"
+            />
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.8"
+            android:background="#BB333333"
+            >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:text="Lorenzo Costa, detto anche il Vecchio (Ferrara, 1460 – Mantova, 5 marzo 1535), è stato un pittore italiano. Fu uno dei più importanti artisti della scuola ferrarese e della Scuola di Mantova del Cinquecento. Fu il padre del pittore Ippolito Costa (1506-1561) e nonno di Lorenzo Costa il Giovane (1537-1583)."
+                android:textSize="14dp"
+                android:gravity="center"
+                android:textColor="#D2D2D2"/>
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="horizontal"
+            android:background="#BB333333">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingTop="5dp"
+                android:paddingBottom="15dp"
+                android:clickable="true"
+                android:onClick="goToAudioGallery"
+                android:src="@drawable/audio_icon"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingTop="5dp"
+                android:paddingBottom="15dp"
+                android:clickable="true"
+                android:onClick="goToVideoGallery"
+                android:src="@drawable/video_icon"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingTop="5dp"
+                android:paddingBottom="15dp"
+                android:clickable="true"
+                android:onClick="goToPhotoGallery"
+                android:src="@drawable/photo_gallery_icon"/>
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>
