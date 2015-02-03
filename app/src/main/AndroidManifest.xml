@@ -10,6 +10,77 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".DemoChieseApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+
+        <!--service android:name="com.parse.PushService" />
+
+        <receiver android:name="com.parse.ParseBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </receiver-->
+
+        <!-- Note:  the singleInstance below is important to keep two copies of your activity from getting launched on automatic startup -->
+        <activity android:name=".SplashActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:launchMode="singleInstance"
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Item1Activity"
+            android:label="@string/title_activity_item1" >
+        </activity>
+        <activity
+            android:name=".Item2Activity"
+            android:label="@string/title_activity_item2" >
+        </activity>
+        <activity
+            android:name=".Item3Activity"
+            android:label="@string/title_activity_item3" >
+        </activity>
+        <activity
+            android:name=".MultimediaActivity"
+            android:label="@string/title_activity_multimedia" >
+        </activity>
+
+        <!--receiver
+            android:name="demochiese.app.lapsy.com.demochiese.push.PushNotificationManager"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.parse.push.intent.RECEIVE" />
+                <action android:name="com.parse.push.intent.DELETE" />
+                <action android:name="com.parse.push.intent.OPEN" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.parse.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+                <category android:name="demochiese.app.lapsy.com.demochiese.DemoChieseApplication" />
+            </intent-filter>
+        </receiver-->
+    </application>
+
+    <!--application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -41,6 +112,6 @@
             android:name=".MultimediaActivity"
             android:label="@string/title_activity_multimedia" >
         </activity>
-    </application>
+    </application-->
 
 </manifest>
