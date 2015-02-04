@@ -43,14 +43,17 @@
             </intent-filter>
         </activity>
         <activity
+            android:launchMode="singleInstance"
             android:name=".Item1Activity"
             android:label="@string/title_activity_item1" >
         </activity>
         <activity
+            android:launchMode="singleInstance"
             android:name=".Item2Activity"
             android:label="@string/title_activity_item2" >
         </activity>
         <activity
+            android:launchMode="singleInstance"
             android:name=".Item3Activity"
             android:label="@string/title_activity_item3" >
         </activity>

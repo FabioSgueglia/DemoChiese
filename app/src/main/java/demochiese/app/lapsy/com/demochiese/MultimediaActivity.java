@@ -61,7 +61,7 @@ public class MultimediaActivity extends ActionBarActivity {
             videoView.start();
         }
         if(photo){
-            mediaFileName = extras.getString("mediaFileName");
+            /*mediaFileName = extras.getString("mediaFileName");
             setContentView(R.layout.activity_multimedia_photo);
             ImageSwitcher imageSwitcher = (ImageSwitcher)findViewById(R.id.imageSwitcher);
             imageSwitcher.setImageResource(R.drawable.ic_launcher);
@@ -70,7 +70,8 @@ public class MultimediaActivity extends ActionBarActivity {
                     ImageView myView = new ImageView(getApplicationContext());
                     return myView;
                 }
-            });
+            });*/
+
         }
 
     }

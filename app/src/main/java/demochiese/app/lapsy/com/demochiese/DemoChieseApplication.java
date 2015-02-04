@@ -12,6 +12,7 @@ import org.altbeacon.beacon.startup.BootstrapNotifier;
 
 
 import android.content.Intent;
+import android.os.RemoteException;
 import android.util.Log;
 
 import com.parse.Parse;
@@ -26,6 +27,7 @@ import org.altbeacon.beacon.startup.RegionBootstrap;
  */
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import demochiese.app.lapsy.com.demochiese.MainActivity;
@@ -44,6 +46,12 @@ public class DemoChieseApplication extends Application implements BootstrapNotif
     private BackgroundPowerSaver mBackgroundPowerSaver;
 
     private RegionBootstrap mRegionBootstrap;
+
+    private static final Integer MAJOR = 257;
+    private static final Integer MINOR_BEACON_1 = 1;
+    private static final Integer MINOR_BEACON_2 = 6;
+    private static final Integer MINOR_BEACON_3 = 8;
+    private Integer beaconSelector = null;
 
     public DemoChieseApplication() {
 
@@ -92,12 +100,21 @@ public class DemoChieseApplication extends Application implements BootstrapNotif
         Log.d(TAG, "Got a didEnterRegion call");
         // This call to disable will make it so the activity below only gets launched the first time a beacon is seen (until the next time the app is launched)
         // if you want the Activity to launch every single time beacons come into view, remove this call.
-        mRegionBootstrap.disable();
-        Intent intent = new Intent(this, MainActivity.class);
+        //mRegionBootstrap.disable();
+        //Intent intent = new Intent(this, MainActivity.class);
         // IMPORTANT: in the AndroidManifest.xml definition of this activity, you must set android:launchMode="singleInstance" or you will get two instances
         // created when a user launches the activity manually and it gets launched from here.
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        this.startActivity(intent);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        //this.startActivity(intent);
+
+        try {
+            Log.d(TAG, String.format("Entered region. Starting ranging -> %s", arg0.toString()));
+            mBeaconManager.setRangeNotifier(this);
+            mBeaconManager.startRangingBeaconsInRegion(mAllBeaconsRegion);
+
+        } catch (RemoteException e) {
+            Log.e(TAG, "Cannot start ranging");
+        }
     }
 
     @Override
@@ -107,6 +124,7 @@ public class DemoChieseApplication extends Application implements BootstrapNotif
 
     @Override
     public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
+
         Log.d(TAG, "didRangeBeaconsInRegion()");
 
         if(beacons.size() > 0) {
@@ -124,8 +142,14 @@ public class DemoChieseApplication extends Application implements BootstrapNotif
                     if(newBeacon.getRssi() > maxRSSI) {
                         maxRSSI = newBeacon.getRssi();
                         nearestBeacon = newBeacon;
+
                         Log.d(TAG, "Nearest beacon: " + nearestBeacon.toString() +
-                        "\n RSSI: " + nearestBeacon.getRssi());
+                                "\n RSSI: " + nearestBeacon.getRssi() + "." +
+                                "\n Distance: " + nearestBeacon.getDistance() + ".");
+
+                        Log.d(TAG, "Beacon selector: " + nearestBeacon.getId3());
+
+                        this.beaconSelector = nearestBeacon.getId3().toInt();
                     }
                 }
                 catch (Exception e) {
@@ -133,6 +157,18 @@ public class DemoChieseApplication extends Application implements BootstrapNotif
                 }
             }
 
+            // Nel primo if rimettere this.MINOR_BEACON_2 al posto di this.MINOR_BEACON_1
+            if(this.beaconSelector.equals(this.MINOR_BEACON_1)) {
+                Intent menuItem1Intent = new Intent(this, Item1Activity.class);
+                menuItem1Intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                this.startActivity(menuItem1Intent);
+            }
+            else if(this.beaconSelector.equals(this.MINOR_BEACON_3)) {
+
+                Intent menuItem2Intent = new Intent(this, Item2Activity.class);
+                menuItem2Intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                this.startActivity(menuItem2Intent);
+            }
         }
     }
 

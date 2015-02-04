@@ -12,46 +12,40 @@ public class BeaconMapping {
 
     private static final String UUID = "01122334-4556-6778-899A-ABBCCDDEEFF0";
     private static final Integer MAJOR = 257;
-    private static  final Integer MINOR_BEACON_1 = 6;
-    private static  final Integer MINOR_BEACON_2 = 8;
+    private static final Integer MINOR_BEACON_1 = 1;
+    private static final Integer MINOR_BEACON_2 = 6;
+    private static final Integer MINOR_BEACON_3 = 8;
     private String uuid;
     private Integer major;
     private Integer minor;
-    private Integer selector = null;
+    private Integer beaconSelector = null;
 
 
     public BeaconMapping() {
     }
 
-    public HashMap getBeaconParameters(Beacon beacon) throws Exception{
+    public void getBeaconParameters(Beacon beacon) throws Exception{
 
         this.uuid = beacon.getId1().toString();
         this.major = beacon.getId2().toInt();
         this.minor = beacon.getId3().toInt();
 
-        HashMap beaconParameters = new HashMap();
-        beaconParameters.put("UUID", this.uuid);
-        beaconParameters.put("MAJOR", this.major);
-        beaconParameters.put("MINOR", this.minor);
-
-        if(this.beaconValidation() && (this.major.equals(this.MAJOR))) {
-            if(this.minor.equals(this.MINOR_BEACON_1)) {
-                this.selector = 1;
-                beaconParameters.put("ITEM_SELECTOR", this.selector);
+        if(this.beaconValidation(this.uuid)) {
+            /*if(this.minor.equals(this.MINOR_BEACON_1)) {
+                this.beaconSelector = this.MINOR_BEACON_1;
             }
             else if(this.minor.equals(this.MINOR_BEACON_2)) {
-                this.selector = 2;
-                beaconParameters.put("ITEM_SELECTOR", this.selector);
-            }
+                this.beaconSelector = this.MINOR_BEACON_2;
+            }*/
         }
         else
             throw new Exception("Beacon di tipo sconosciuto per questa applicazione.");
 
-        return beaconParameters;
+        //return beaconSelector;
     }
 
-    private boolean beaconValidation() {
-        if(this.UUID.equals(this.uuid))
+    private boolean beaconValidation(String uuid) {
+        if(uuid.toUpperCase().equals(this.uuid.toUpperCase()))
             return true;
         else
             return false;

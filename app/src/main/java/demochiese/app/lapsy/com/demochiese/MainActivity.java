@@ -65,21 +65,24 @@ public class MainActivity extends ActionBarActivity
 
     // Menu del NavigationDrawer
     public void onSectionAttached(int number) {
+        // Dal secondo case in poi gli indici sono cambiati(i+1) perché ho aggiunto delle voci vuote
+        // per simulare i separatori nel menu. Una volta implementati i veri separatori, e tolte
+        // le voci vuote, si possono ripristinare gli indici(i-1)
         switch (number) {
             case 1:
                 mTitle = getString(R.string.title_home);
                 break;
-            case 2:
+            case 3:
                 Intent i_item1 = new Intent(this, Item1Activity.class);
                 startActivity(i_item1);
                 finish();
                 break;
-            case 3:
+            case 4:
                 Intent i_item2 = new Intent(this, Item2Activity.class);
                 startActivity(i_item2);
                 finish();
                 break;
-            case 4:
+            case 5:
                 Intent i_item3 = new Intent(this, Item3Activity.class);
                 startActivity(i_item3);
                 finish();
