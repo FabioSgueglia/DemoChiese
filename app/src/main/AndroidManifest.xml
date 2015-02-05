@@ -8,22 +8,31 @@
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
     <uses-permission android:name="android.permission.INTERNET" />
+    <!--<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <permission android:protectionLevel="signature"
+    android:name=".DemoChieseApplication.permission.C2D_MESSAGE" />
+    <uses-permission android:name=".DemoChieseApplication.permission.C2D_MESSAGE" />-->
 
     <application
         android:name=".DemoChieseApplication"
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
 
-        <!--service android:name="com.parse.PushService" />
+        <!--<service android:name="com.parse.PushService" />
 
         <receiver android:name="com.parse.ParseBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
-        </receiver-->
+        </receiver>-->
 
         <!-- Note:  the singleInstance below is important to keep two copies of your activity from getting launched on automatic startup -->
         <activity android:name=".SplashActivity" >
@@ -34,13 +43,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:launchMode="singleInstance"
             android:name=".MainActivity"
             android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:launchMode="singleInstance"
@@ -62,7 +66,7 @@
             android:label="@string/title_activity_multimedia" >
         </activity>
 
-        <!--receiver
+        <!--<receiver
             android:name="demochiese.app.lapsy.com.demochiese.push.PushNotificationManager"
             android:exported="false">
             <intent-filter>
@@ -80,41 +84,6 @@
 
                 <category android:name="demochiese.app.lapsy.com.demochiese.DemoChieseApplication" />
             </intent-filter>
-        </receiver-->
+        </receiver>-->
     </application>
-
-    <!--application
-        android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-        <activity android:name=".SplashActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
-            android:name=".Item1Activity"
-            android:label="@string/title_activity_item1" >
-        </activity>
-        <activity
-            android:name=".Item2Activity"
-            android:label="@string/title_activity_item2" >
-        </activity>
-        <activity
-            android:name=".Item3Activity"
-            android:label="@string/title_activity_item3" >
-        </activity>
-        <activity
-            android:name=".MultimediaActivity"
-            android:label="@string/title_activity_multimedia" >
-        </activity>
-    </application-->
-
 </manifest>

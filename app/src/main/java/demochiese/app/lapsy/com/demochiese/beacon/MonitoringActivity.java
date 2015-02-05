@@ -90,15 +90,15 @@ public class MonitoringActivity extends Activity {
     }
 
     public void didEnterRegion(Region region) {
-        Log.i(TAG, "I just saw a beacon named " + region.getUniqueId() + " for the first time!");
+        //
     }
 
     public void didExitRegion(Region region) {
-        Log.i(TAG, "I no longer see a beacon named: " + region.getUniqueId());
+        //
     }
 
     public void didDetermineStateForRegion(int state, Region region) {
-        Log.i(TAG, "I have just switched from seeing/not seeing beacons: " + state);
+        //
     }
 
 }

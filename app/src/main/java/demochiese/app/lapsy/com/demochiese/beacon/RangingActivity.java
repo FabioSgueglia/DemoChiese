@@ -48,11 +48,6 @@ public class RangingActivity extends Activity {
     }
 
     public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
-        Log.d(TAG, "didRangeBeaconsInRegion()");
-        if (beacons.size() > 0) {
-            for (Beacon beacon: beacons) {
-                Log.d(TAG, "Beacon "+beacon.toString()+" is about "+beacon.getDistance()+" meters away, with Rssi: "+beacon.getRssi());
-            }
-        }
+        //
     }
 }
