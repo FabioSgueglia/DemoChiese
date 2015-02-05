@@ -27,10 +27,8 @@ import org.altbeacon.beacon.startup.RegionBootstrap;
  */
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 
-import demochiese.app.lapsy.com.demochiese.MainActivity;
 import demochiese.app.lapsy.com.demochiese.beacon.BeaconMapping;
 import demochiese.app.lapsy.com.demochiese.beacon.MonitoringActivity;
 import demochiese.app.lapsy.com.demochiese.beacon.RangingActivity;
@@ -53,6 +51,8 @@ public class DemoChieseApplication extends Application implements BootstrapNotif
     private static final Integer MINOR_BEACON_3 = 8;
     private Integer beaconSelector = null;
 
+    private boolean isBeacon2= true, isBeacon3 = true;
+
     public DemoChieseApplication() {
 
     }
@@ -61,9 +61,6 @@ public class DemoChieseApplication extends Application implements BootstrapNotif
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "App started up");
-        // wake up the app when any beacon is seen (you can specify specific id filers in the parameters below)
-        /*Region region = new Region("com.example.myapp.boostrapRegion", null, null, null);
-        regionBootstrap = new RegionBootstrap(this, region);*/
 
         /*Parse.initialize(this, "EqyQsQiWM8utoEJOrYboKpRksVVYAWRhy0hRYPtZ", "WCjDbRqz6enzuL7H869GQwOjwUAEox43V2ZOvQQi");
         // Also in this method, specify a default Activity to handle push notifications
@@ -80,13 +77,14 @@ public class DemoChieseApplication extends Application implements BootstrapNotif
             }
         });*/
 
-        mAllBeaconsRegion = new Region("All beacons region", null, null, null);
+        // Wake up the app when any beacon is seen (you can specify specific id filers in the parameters below)
+        this.mAllBeaconsRegion = new Region("All beacons region", null, null, null);
+        this.mRegionBootstrap = new RegionBootstrap(this, mAllBeaconsRegion);
 
         this.mBeaconManager = BeaconManager.getInstanceForApplication(this);
         this.mBackgroundPowerSaver = new BackgroundPowerSaver(this);
         this.mBeaconManager.setBackgroundBetweenScanPeriod(6000);
         this.mBeaconManager.setBackgroundScanPeriod(10000);
-        this.mRegionBootstrap = new RegionBootstrap(this, mAllBeaconsRegion);
         this.mBeaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout("m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"));
     }
 
@@ -98,15 +96,19 @@ public class DemoChieseApplication extends Application implements BootstrapNotif
     @Override
     public void didEnterRegion(Region arg0) {
         Log.d(TAG, "Got a didEnterRegion call");
+
         // This call to disable will make it so the activity below only gets launched the first time a beacon is seen (until the next time the app is launched)
         // if you want the Activity to launch every single time beacons come into view, remove this call.
         //mRegionBootstrap.disable();
+
         //Intent intent = new Intent(this, MainActivity.class);
         // IMPORTANT: in the AndroidManifest.xml definition of this activity, you must set android:launchMode="singleInstance" or you will get two instances
         // created when a user launches the activity manually and it gets launched from here.
         //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         //this.startActivity(intent);
 
+        // This try-catch construct allows you to trigger an action for a specific distance (the distance
+        // must be specified within didRangeBeaconsInRegion method **).
         try {
             Log.d(TAG, String.format("Entered region. Starting ranging -> %s", arg0.toString()));
             mBeaconManager.setRangeNotifier(this);
@@ -125,7 +127,15 @@ public class DemoChieseApplication extends Application implements BootstrapNotif
     @Override
     public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
 
-        Log.d(TAG, "didRangeBeaconsInRegion()");
+        Log.d(TAG, "didRangeBeaconsInRegion");
+
+        // ** Specified distance and relative action/s.
+        /*for (Beacon beacon: beacons) {
+            if (beacon.getDistance() < 5.0) {
+                Log.d(TAG, "I see a beacon that is less than 5 meters away.");
+                // Perform distance-specific action here
+            }
+        }*/
 
         if(beacons.size() > 0) {
 
@@ -157,14 +167,21 @@ public class DemoChieseApplication extends Application implements BootstrapNotif
                 }
             }
 
-            // Nel primo if rimettere this.MINOR_BEACON_2 al posto di this.MINOR_BEACON_1
-            if(this.beaconSelector.equals(this.MINOR_BEACON_1)) {
+            // Le variabili isBeacon<n> implementano un semaforo mutex, per evitare che le activity
+            // istanziate prendano monopolio della schermata. In questo modo, una volta rilevato il
+            // relativo beacon, istanzio la relativa activity e posso tranquillamente svolgere
+            // qualsiasi azione all'interno (e all'esterno) dell'activity stessa senza che
+            // periodicamente, in base alla scan frequency, essa venga re-istanziata.
+            if(this.beaconSelector.equals(this.MINOR_BEACON_2) && this.isBeacon2) {
+                this.isBeacon2 = false;
+                this.isBeacon3 = true;
                 Intent menuItem1Intent = new Intent(this, Item1Activity.class);
                 menuItem1Intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 this.startActivity(menuItem1Intent);
             }
-            else if(this.beaconSelector.equals(this.MINOR_BEACON_3)) {
-
+            else if(this.beaconSelector.equals(this.MINOR_BEACON_3) && this.isBeacon3) {
+                this.isBeacon2 = true;
+                this.isBeacon3 = false;
                 Intent menuItem2Intent = new Intent(this, Item2Activity.class);
                 menuItem2Intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 this.startActivity(menuItem2Intent);

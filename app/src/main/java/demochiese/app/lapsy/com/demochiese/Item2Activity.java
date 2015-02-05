@@ -45,6 +45,11 @@ public class Item2Activity extends ActionBarActivity {
         this.finish();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
     public void goToAudioGallery(View view){
         Intent i = new Intent(this, MultimediaActivity.class);
         i.putExtra("video", false);
