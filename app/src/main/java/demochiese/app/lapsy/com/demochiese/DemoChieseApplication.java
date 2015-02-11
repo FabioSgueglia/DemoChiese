@@ -15,11 +15,6 @@ import android.content.Intent;
 import android.os.RemoteException;
 import android.util.Log;
 
-import com.parse.Parse;
-import com.parse.ParseException;
-import com.parse.ParsePush;
-import com.parse.SaveCallback;
-
 import org.altbeacon.beacon.startup.RegionBootstrap;
 
 /**
@@ -35,6 +30,7 @@ import demochiese.app.lapsy.com.demochiese.beacon.RangingActivity;
 
 public class DemoChieseApplication extends Application implements BootstrapNotifier, RangeNotifier {
 
+    private static final String UUID = "01122334-4556-6778-899A-ABBCCDDEEFF0";
     private static final String TAG = ".demochiese.app.lapsy.com.demochiese.DemoChieseApplication";
 
     private BeaconManager mBeaconManager;
@@ -49,12 +45,12 @@ public class DemoChieseApplication extends Application implements BootstrapNotif
     private static final Integer MINOR_BEACON_1 = 1;
     private static final Integer MINOR_BEACON_2 = 6;
     private static final Integer MINOR_BEACON_3 = 8;
-    private Integer beaconSelector = null;
+    private Integer beaconSelector;
 
-    private boolean isBeacon2= true, isBeacon3 = true;
+    private boolean isBeacon2 = true, isBeacon3 = true;
 
     public DemoChieseApplication() {
-
+        this.beaconSelector = 0;
     }
 
     @Override
@@ -146,14 +142,17 @@ public class DemoChieseApplication extends Application implements BootstrapNotif
             while(allBeacons.hasNext()) {
                 try {
                     Beacon newBeacon = allBeacons.next();
-                    BeaconMapping bm = new BeaconMapping();
-                    bm.getBeaconParameters(newBeacon);
+                    // Si può istanziare fuori dal while? (Da provare)
+                    BeaconMapping bm = new BeaconMapping(this.UUID);
+                    bm.setBeaconParameters(newBeacon);
 
                     if(newBeacon.getRssi() > maxRSSI) {
                         maxRSSI = newBeacon.getRssi();
                         nearestBeacon = newBeacon;
 
-                        Log.d(TAG, "Nearest beacon: " + nearestBeacon.toString() +
+                        Log.d(TAG, "Nearest beacon has UUID: " + nearestBeacon.getId1().toString() +
+                                ", Major: " + nearestBeacon.getId2() + ", Minor: "
+                                + nearestBeacon.getId3() + "." +
                                 "\n RSSI: " + nearestBeacon.getRssi() + "." +
                                 "\n Distance: " + nearestBeacon.getDistance() + ".");
 
