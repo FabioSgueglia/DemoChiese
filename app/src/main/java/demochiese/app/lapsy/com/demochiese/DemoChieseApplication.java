@@ -38,8 +38,9 @@ public class DemoChieseApplication extends Application implements BootstrapNotif
     private MonitoringActivity mMonitoringActivity;
     private RangingActivity mRangingActivity;
     private BackgroundPowerSaver mBackgroundPowerSaver;
-
     private RegionBootstrap mRegionBootstrap;
+
+    private Iterator<Beacon> allBeacons;
 
     private static final Integer MAJOR = 257;
     private static final Integer MINOR_BEACON_1 = 1;
@@ -138,7 +139,7 @@ public class DemoChieseApplication extends Application implements BootstrapNotif
             int maxRSSI = Integer.MIN_VALUE;
             Beacon nearestBeacon = null;
 
-            Iterator<Beacon> allBeacons = beacons.iterator();
+            this.allBeacons = beacons.iterator();
             while(allBeacons.hasNext()) {
                 try {
                     Beacon newBeacon = allBeacons.next();
